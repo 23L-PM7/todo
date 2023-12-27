@@ -6,13 +6,17 @@
     <body>
         <div class="board">
             <div class="list">
-                <div class="task">Shalaa ugaah</div>
-                <div class="task">Toosoo archih</div>
+                <div id="todoTasks">
+                    <div class="task">Shalaa ugaah</div>
+                    <div class="task">Toosoo archih</div>
+                </div>
+
                 <button onclick="showModal()">Add task</button>
             </div>
             <div class="list">
                 <div class="task">Shalaa ugaah</div>
                 <div class="task">Toosoo archih</div>
+
                 <button>Add task</button>
             </div>
             <div class="list">
@@ -30,17 +34,44 @@
         <div class="modal" id="createModal">
             <div class="modal-bg" onclick="hideModal()"></div>
             <div class="modal-content">
-                Hello
+                <div>
+                    <label for="taskTitle">Title</label>
+                    <br />
+                    <input id="taskTitle" />
+                </div>
+                <div>
+                    <label for="taskDescription">Description</label>
+                    <br />
+                    <textarea id="taskDescription"></textarea>
+                </div>
+
+                <button onclick="addTask()">Add task</button>
                 <button onclick="hideModal()">Close</button>
             </div>
         </div>
     </body>
     <script>
-        function showModal() {
-            const modal = document.getElementById("createModal");
-            // const modal = document.querySelector("#createModal");
-            // const modals = document.getElementsByClassName("modal");
+        function addTask() {
+            const title = document.getElementById("taskTitle").value;
+            const description = document.getElementById("taskDescription").value;
 
+            const taskHtml = `<div class="task">${title} (${description})</div>`;
+
+            const todoElement = document.getElementById("todoTasks");
+
+            todoElement.innerHTML = todoElement.innerHTML + taskHtml;
+
+            hideModal();
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById("taskTitle").value = "";
+            document.getElementById("taskDescription").value = "";
+        }
+
+        function showModal() {
+            const modal = document.querySelector("#createModal");
             modal.style.display = "flex";
             console.log(modal);
         }

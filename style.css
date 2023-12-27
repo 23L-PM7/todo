@@ -8,6 +8,7 @@ html {
     width: 1000px;
     margin: 0 auto;
     gap: 20px;
+    align-items: flex-start;
 }
 
 .list {
