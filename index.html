@@ -6,28 +6,38 @@
     <body>
         <div class="board">
             <div class="list">
+                <h2>Todo</h2>
                 <div id="todoTasks">
                     <div class="task">Shalaa ugaah</div>
                     <div class="task">Toosoo archih</div>
+                    <!-- auto generated tasks -->
                 </div>
 
-                <button onclick="showModal()">Add task</button>
+                <button onclick="showModal('todoTasks')">Add task</button>
             </div>
             <div class="list">
-                <div class="task">Shalaa ugaah</div>
-                <div class="task">Toosoo archih</div>
+                <h2>In Progress</h2>
+                <div id="inprogressTasks">
+                    <!-- auto generated tasks -->
+                </div>
 
-                <button>Add task</button>
+                <button onclick="showModal('inprogressTasks')">Add task</button>
             </div>
             <div class="list">
-                <div class="task">Shalaa ugaah</div>
-                <div class="task">Toosoo archih</div>
-                <button>Add task</button>
+                <h2>Stuck</h2>
+                <div id="stuckTasks">
+                    <!-- auto generated tasks -->
+                </div>
+
+                <button onclick="showModal('stuckTasks')">Add task</button>
             </div>
             <div class="list">
-                <div class="task modal">Shalaa ugaah</div>
-                <div class="task">Toosoo archih</div>
-                <button>Add task</button>
+                <h2>Done</h2>
+                <div id="doneTasks">
+                    <!-- auto generated tasks -->
+                </div>
+
+                <button onclick="showModal('doneTasks')">Add task</button>
             </div>
         </div>
 
@@ -44,6 +54,27 @@
                     <br />
                     <textarea id="taskDescription"></textarea>
                 </div>
+                <div>
+                    <label for="taskPriority">Priority</label>
+                    <br />
+                    <select id="taskPriority">
+                        <option>low</option>
+                        <option>medium</option>
+                        <option>high</option>
+                        <option>urgent</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="taskStatus">Status</label>
+                    <br />
+                    <select id="taskStatus">
+                        <option value="todoTasks">Todo</option>
+                        <option value="inprogressTasks">In Progress</option>
+                        <option value="stuckTasks">Stuck</option>
+                        <option value="doneTasks">Done</option>
+                    </select>
+                </div>
 
                 <button onclick="addTask()">Add task</button>
                 <button onclick="hideModal()">Close</button>
@@ -51,13 +82,26 @@
         </div>
     </body>
     <script>
+        let currentTarget = "todoTasks";
+        let generatedId = 0;
+
         function addTask() {
             const title = document.getElementById("taskTitle").value;
             const description = document.getElementById("taskDescription").value;
+            const priority = document.getElementById("taskPriority").value;
 
-            const taskHtml = `<div class="task">${title} (${description})</div>`;
+            generatedId++;
 
-            const todoElement = document.getElementById("todoTasks");
+            const taskHtml = `
+                <div class="task" id="task-${generatedId}">
+                    <span>${priority}</span>
+                    <h1>${title}</h1>
+                    <p>${description}</p>
+                    <button onclick="removeTask('task-${generatedId}')">remove</button>
+                </div>
+                `;
+
+            const todoElement = document.getElementById(currentTarget);
 
             todoElement.innerHTML = todoElement.innerHTML + taskHtml;
 
@@ -65,14 +109,19 @@
             resetForm();
         }
 
+        function removeTask(taskId) {
+            document.getElementById(taskId).remove();
+        }
+
         function resetForm() {
             document.getElementById("taskTitle").value = "";
             document.getElementById("taskDescription").value = "";
         }
 
-        function showModal() {
+        function showModal(targetId) {
             const modal = document.querySelector("#createModal");
             modal.style.display = "flex";
+            currentTarget = targetId;
         }
 
         function hideModal() {
