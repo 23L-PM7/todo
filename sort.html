@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Array Sort</title>
+  </head>
+  <body>
+    <script>
+      //   // 1
+      //   const names = ["bunny", "puppy", "bird", "kitten"];
+      //   names.sort();
+      //   console.log(names);
+
+      //   //   2
+      //   const numbers = [10, 3, 65, 77, 2024, 109];
+
+      //   numbers.sort(compare);
+      //   function compare(a, b) {
+      //     // 1. < 0 "a" urd orno
+      //     // 2. 0 no change
+      //     // 3. > 0 "b" urd orno
+      //     return a - b;
+      //   }
+      //   console.log(numbers);
+      //   //   3
+      //   const products = [
+      //     { name: "desktop", price: 1500 },
+      //     { name: "laptop", price: 1000 },
+      //     { name: "phone", price: 700 },
+      //     { name: "car", price: 5000 },
+      //   ];
+
+      //   products.sort((a, b) => {
+      //     return a.price - b.price;
+      //   });
+      //   console.log(products);
+
+      //   4
+      const array = [
+        { priority: "medium", value: "Task 1" },
+        { priority: "low", value: "Task 2" },
+        { priority: "high", value: "Task 3" },
+        { priority: "medium", value: "Task 4" },
+        { priority: "high", value: "Task 5" },
+        { priority: "low", value: "Task 6" },
+      ];
+
+      const order = { high: 1, medium: 2, low: 3 };
+      //   const order = { medium: 1, high: 2, low: 3 };
+
+      const sortedArray = array.sort((a, b) => {
+        return order[a.priority] - order[b.priority];
+      });
+      console.log(sortedArray);
+
+      // 1. < 0 "a" urd orno
+      // 2. 0 no change
+      // 3. > 0 "b" urd orno
+    </script>
+  </body>
+</html>

@@ -14,8 +14,6 @@
       <div class="list">
         <p class="board-header">Todo</p>
         <div id="todoTasks">
-          <div class="task">Shalaa ugaah</div>
-          <div class="task">Toosoo archih</div>
           <!-- auto generated tasks -->
         </div>
         <button onclick="showModal('todoTasks')">
@@ -112,10 +110,9 @@
           <label for="taskPriority">Priority</label>
           <br />
           <select id="taskPriority">
-            <option>low</option>
-            <option>medium</option>
-            <option>high</option>
-            <option>urgent</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
           </select>
         </div>
 
@@ -135,36 +132,53 @@
       </div>
     </div>
   </body>
+
   <script>
+    const tasks = [];
     let currentTarget = "todoTasks";
     let generatedId = 0;
+
+    function renderTasks() {
+      const tasksElement = document.getElementById(currentTarget);
+      let result = "";
+
+      for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        const taskHtml = `
+        <div class="task" id="task-${task.id}">
+          <span>${task.priority}</span>
+          <h1>${task.title}</h1>
+          <p>${task.description}</p>
+          <button onclick="removeTask(${i})">remove</button>
+        </div>
+      `;
+        result += taskHtml;
+      }
+
+      tasksElement.innerHTML = result;
+    }
 
     function addTask() {
       const title = document.getElementById("taskTitle").value;
       const description = document.getElementById("taskDescription").value;
       const priority = document.getElementById("taskPriority").value;
 
-      generatedId++;
+      tasks.push({
+        id: generatedId++,
+        title: title,
+        description: description,
+        priority: priority,
+        status: currentTarget.replace("Tasks", ""),
+      });
 
-      const taskHtml = `
-                <div class="task" id="task-${generatedId}">
-                    <span>${priority}</span>
-                    <h1>${title}</h1>
-                    <p>${description}</p>
-                    <button onclick="removeTask('task-${generatedId}')">remove</button>
-                </div>
-                `;
-
-      const todoElement = document.getElementById(currentTarget);
-
-      todoElement.innerHTML = todoElement.innerHTML + taskHtml;
-
+      renderTasks();
       hideModal();
       resetForm();
     }
 
-    function removeTask(taskId) {
-      document.getElementById(taskId).remove();
+    function removeTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
     }
 
     function resetForm() {
