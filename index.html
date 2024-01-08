@@ -89,10 +89,10 @@
           <label for="taskStatus">Status</label>
           <br />
           <select id="taskStatus">
-            <option value="todoTasks">Todo</option>
-            <option value="inprogressTasks">In Progress</option>
-            <option value="stuckTasks">Stuck</option>
-            <option value="doneTasks">Done</option>
+            <option value="todo">Todo</option>
+            <option value="inprogress">In Progress</option>
+            <option value="stuck">Stuck</option>
+            <option value="done">Done</option>
           </select>
         </div>
 
@@ -111,6 +111,7 @@
         description: "description",
         priority: "High",
         status: "todo",
+        position: 6,
       },
 
       {
@@ -119,6 +120,7 @@
         description: "description",
         priority: "High",
         status: "inprogress",
+        position: 2,
       },
       {
         id: -2,
@@ -126,6 +128,7 @@
         description: "description",
         priority: "Medium",
         status: "stuck",
+        position: 4,
       },
       {
         id: -3,
@@ -133,6 +136,7 @@
         description: "description",
         priority: "Low",
         status: "done",
+        position: 3,
       },
       {
         id: -4,
@@ -140,6 +144,7 @@
         description: "description",
         priority: "Low",
         status: "inprogress",
+        position: 1,
       },
       {
         id: -5,
@@ -147,6 +152,7 @@
         description: "description",
         priority: "Medium",
         status: "inprogress",
+        position: 5,
       },
     ];
     let currentTarget = "todoTasks";
@@ -165,17 +171,7 @@
       let doneResult = "";
 
       tasks.sort((a1, a2) => {
-        const priorityNumbers = {
-          Low: 3,
-          Medium: 2,
-          High: 1,
-        };
-
-        if (priorityNumbers[a1.priority] > priorityNumbers[a2.priority]) {
-          return 1;
-        } else {
-          return -1;
-        }
+        return a1.position - a2.position;
       });
 
       for (let i = 0; i < tasks.length; i++) {
@@ -186,6 +182,16 @@
                             <p>${task.description}</p>
                             <button onclick="removeTask(${i})">remove</button>
                             <button onclick="editTask(${i})">edit</button>
+
+                            <button onclick="changePosition(${i})">up</button>
+                            <button onclick="changePosition(${i})">down</button>
+
+                            <select onchange="changeStatus(${i},this.value);">
+                                <option ${task.status === "todo" ? "selected" : ""}>todo</option>
+                                <option ${task.status === "inprogress" ? "selected" : ""}>inprogress</option>
+                                <option ${task.status === "stuck" ? "selected" : ""}>stuck</option>
+                                <option ${task.status === "done" ? "selected" : ""}>done</option>
+                            </select>
                           </div>`;
 
         switch (task.status) {
@@ -210,6 +216,25 @@
       doneTasksElement.innerHTML = doneResult;
     }
 
+    function changeStatus(index, value) {
+      tasks[index].status = value;
+      renderTasks();
+    }
+
+    function changePosition(index, value) {
+      let a = 4; // tasks[index].position;
+      let b = 10; // tasks[index - 1].position;
+
+      console.log({ a, b });
+
+      let temp = a;
+
+      a = b;
+      b = temp;
+
+      console.log({ a, b });
+    }
+
     function addTask() {
       const title = document.getElementById("taskTitle").value;
       const description = document.getElementById("taskDescription").value;
@@ -232,9 +257,12 @@
       const title = document.getElementById("taskTitle").value;
       const description = document.getElementById("taskDescription").value;
       const priority = document.getElementById("taskPriority").value;
+      const status = document.getElementById("taskStatus").value;
 
       tasks[editingIndex].title = title;
       tasks[editingIndex].description = description;
+      tasks[editingIndex].priority = priority;
+      tasks[editingIndex].status = status;
 
       renderTasks();
       hideModal();
